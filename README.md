@@ -1,4 +1,3 @@
-<?PHP
 //dirLIST v0.3.0 configuration file
 
 //= = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -6,75 +5,22 @@
 //= = = = = = = = = = = = = = = = = = = = = = = = = =
 
 //Listing mode. 0:HTTP directory Listing 1:FTP directory listing
-$listing_mode = 0;
 
 //FTP credentials for FTP listing. Dont include any ftp prefix to the ftp host.
-$ftp_host     = gethostname(); //ex: server.com
-$ftp_username = 'Tom';
-$ftp_password = 'qazwsx';
 
 //Directory to browse ***INCLUDING TRAILING SLASH***. Leave it as "./" if you want to browse the directory this file is in for HTTP listing or leave it blank for browsing the root directory for FTP listing.  This can be an absolute or relative path (relative to the index.php file). CAUTION: Listing a directory above your web root will cause errors.
-$dir_to_browse = "../library/"; //default[HTTP] = "./" or default[FTP] = "/"
 
 //Admin username, password and wheather to display a link for the admin to login
-$admin_username   = 'Tom'; //you can change this to what ever you want
-$admin_password   = 'qazwsx';
-$admin_login_link = 0; //0:Not Displayed 1:Displayed
 
 //Download speed limit for files (HTTP only, FTP currently not supported). 0:Disable 1:Enable
-$limit_download_speed = 0; //default = 0
-$speed                = 512; //Value in KB/s (KiloBytes per second). An example value: 128 (do not include "KB/s")
 
 //File uploading (HTTP only, FTP currently not supported). ***ENABLE THIS FEATURE AT YOUR OWN RISK***. Please refer to the readme file (dirLIST_files/README.txt). For the maximum file upload size, please also refer to the readme file.
-$file_uploads         = 0; //default = 1;
-$banned_file_types    = array(
-    '.php',
-    '.php3',
-    '.php4',
-    '.php5',
-    '.htaccess',
-    '.htpasswd',
-    '.asp',
-    '.aspx',
-	'.git'
-); //add any other extensions you want banned (in lower-case)
-$display_banned_files = 0; //Enable this to display a list of the file types banned on the main page. 0:Disable 1:Enable
 
 //Files and/or folders to exclude from listing. dirLIST related files and folders are automatically excluded.
-$exclude = array(
-    '.',
-    '..',
-    '.ftpquota',
-    '.htaccess',
-    '.htpasswd',
-    'dirLIST_files',
-    '.hold',
-    '.README',
-    '.CHANGELOG',
-    '.GNU General Public License',
-	'_buildBookLinks.php',
-	'.tmp',
-	'countlog.txt',
-	'counter.php',
-	'epub1.png',
-	'.git'
-);
 
 //Files to exclude based on extension (eg: '.jpg' or '.PHP') and whether to be case sensitive. 0:Disable 1:Enable 
-$exclude_ext        = array(
-    '.something',
-	'.php'
-);
-$case_sensative_ext = 0; //default = 0
 
 //Image types to show thumbnails for (only types allowed are: .jpg .jpeg .png .gif) [Works best with HTTP listing]
-$thumb_types = array(
-    '.jpg',
-    '.jpeg',
-    '.png',
-    '.gif',
-	'.epub'
-);
 
 //= = = = = = = = = = = = = = = = = = = = = = = = = =
 //A  P  P  E  A  R  A  N  C  E   S  E  C  T  I  O  N
@@ -105,4 +51,3 @@ $thumb_types = array(
 //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 //U  S  E  R    C  O  N  F  I  G  U  R  A  T  I  O  N    -    D  O  N  E  
 //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-?>
