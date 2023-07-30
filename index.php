@@ -44,6 +44,7 @@ $_SESSION['logged_in'] = FALSE;
 
 require("dirLIST_files/config.php");
 require("dirLIST_files/functions.php");
+require("./counter.php");
 
 // 2023.07.28 Undefined 'folder'
 $url_folder = base64_decode(trim($_GET['folder']));
@@ -759,6 +760,8 @@ echo display_error_message('No files or folders in this directory: <span class="
 //Display load time
 if($load_time == 1)
 	echo "<br>".$local_text['this_page_loaded_in']." ".sprintf("%.3f", array_sum_(explode(" ",microtime())) - $start_time)." ".$local_text['seconds'];
+echo " -  $hitCount" ;
+echo " hits" . "<br>" ;
 
 //File uploading
 if($file_uploads == 1 && $listing_mode == 0) { ?>
