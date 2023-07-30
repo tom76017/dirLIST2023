@@ -1,5 +1,7 @@
 //dirLIST v0.3.0 configuration file
 
+change dirLIST_files/config.php
+
 //= = = = = = = = = = = = = = = = = = = = = = = = = =
 //U  S  E  R    C  O  N  F  I  G  U  R  A  T  I  O  N   
 //= = = = = = = = = = = = = = = = = = = = = = = = = =
