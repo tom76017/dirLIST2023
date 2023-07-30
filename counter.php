@@ -1,20 +1,22 @@
 <?php
 
 /* counter */
+// Add correct path to your countlog.txt file.
+$path = './countlog.txt';
 
 //opens countlog.txt to read the number of hits
-$datei = fopen("./countlog.txt","r");
-$hitCount = fgets($datei,1000);
-fclose($datei);
-$hitCount=$hitCount + 1 ;
+$countfile  = fopen( $path, 'r' );
+$hitCount = fgets( $countfile, 1000 );
+fclose( $countfile );
 
-#echo "$hitCount" ;
-#echo " hits" ;
-#echo "\n" ;
+// Update the count.
+$hitCount = abs( intval( $hitCount ) ) + 1;
+
+#echo "{$hitCount} hits\n";
 
 // opens countlog.txt to change new hit number
-$datei = fopen("./countlog.txt","w");
-fwrite($datei, $hitCount);
-fclose($datei);
+$countfile = fopen( $path, 'w' );
+fwrite( $countfile, $hitCount );
+fclose( $countfile );
 
 ?>
