@@ -47,7 +47,7 @@ require("dirLIST_files/functions.php");
 require("./counter.php");
 
 // 2023.07.28 Undefined 'folder'
-$url_folder = base64_decode(trim($_GET['folder']));
+if(isset($_GET['folder'])) $url_folder = base64_decode(trim($_GET['folder']));
 if(!empty($_GET['folder']))
 	$dir_to_browse .= $url_folder."/";
 
@@ -518,17 +518,17 @@ if(!empty($folders['name']) || !empty($files['name'])) { ?>
                     <tr>
                         <td width="95" class="top_row"><?PHP echo $local_text['total_files']; ?></td>
                         <td>
-						<?PHP echo count_($files['name']); ?>, 
+						<?PHP if(isset($_GET['name'])) echo count_($files['name']); ?>, 
 						<?PHP echo $local_text['consuming']; ?>: 
-						<?PHP echo letter_size(array_sum_($files['size'])); ?>
+						<?PHP if(isset($_GET['size'])) echo letter_size(array_sum_($files['size'])); ?>
 						</td>
                     </tr>
                     <tr>
                         <td width="95" class="top_row"><?PHP echo $local_text['total_files_and_folders']; ?></td>
                         <td>
-						<?PHP echo (count_($folders['name'])+count_($files['name'])); ?>, 
+						<?PHP if(isset($_GET['name'])) echo (count_($folders['name'])+count_($files['name'])); ?>, 
 						<?PHP echo $local_text['consuming']; ?>: 
-						<?PHP echo letter_size((array_sum_($files['size'])+array_sum_($folders['size']))); ?>
+						<?PHP if(isset($_GET['size'])) echo letter_size((array_sum_($files['size'])+array_sum_($folders['size']))); ?>
 						</td>
                     </tr>
                 </table><br />
@@ -590,17 +590,17 @@ if(!empty($folders['name']) || !empty($files['name'])) { ?>
     <tr>
     	<td width="
 			<?PHP echo ($view_mode == 0) ? '414':$width_of_files_column; ?>" class="top_row"><a class="sort" href="dirLIST_files/sort.php?by=name&folder=
-			<?PHP echo $_GET['folder']; ?>">
+			<?PHP if(isset($_GET['folder'])) echo $_GET['folder']; ?>">
 			<?PHP echo $local_text['name']; ?></a>
 		</td>
 		<td width="
 			<?PHP echo ($view_mode == 0) ? '128':$width_of_sizes_column; ?>" class="top_row"><a class="sort" href="dirLIST_files/sort.php?by=size&folder=
-			<?PHP echo $_GET['folder']; ?>">
+			<?PHP if(isset($_GET['folder'])) echo $_GET['folder']; ?>">
 			<?PHP echo $local_text['size']; ?></a>
 		</td>
     	<td width="
 			<?PHP echo ($view_mode == 0) ? '128':$width_of_dates_column; ?>" class="top_row"><a class="sort" href="dirLIST_files/sort.php?by=date&folder=
-			<?PHP echo $_GET['folder']; ?>">
+			<?PHP if(isset($_GET['folder'])) echo $_GET['folder']; ?>">
 			<?PHP echo $local_text['date_uploaded']; ?></a></td>
 	</tr>
 </table>
