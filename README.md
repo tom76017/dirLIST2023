@@ -1,4 +1,4 @@
-//dirLIST v0.3.0 configuration file
+//dirLIST v0.3.0 configuration file updated to support PHP8
 
 change dirLIST_files/config.php
 
