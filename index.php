@@ -83,8 +83,9 @@ else
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>eBooks - <?PHP if(empty($url_folder)) echo "Index of: home/"; else echo "Index of: home/".$url_folder."/"; ?></title>
 <style type="text/css">
-<!--
-<?PHP echo 'body,td,th {font-family: Tahoma, Verdana;font-size: 10pt;}
+
+<?PHP 
+echo 'body,td,th {font-family: Tahoma, Verdana;font-size: 10pt;}
 a:link {text-decoration: none;color: '.$color_scheme['link_content']['link'].';}
 a:visited {text-decoration: none;color: '.$color_scheme['link_content']['visited'].';}
 a:hover {text-decoration: underline;color: '.$color_scheme['link_content']['hover'].';}
@@ -96,7 +97,10 @@ a.sort:active{text-decoration: none;color: '.$color_scheme['link_sort']['active'
 .top_row {color: '.$color_scheme['top_row']['color'].';font-weight: bold;font-size: 14px;background-color: '.$color_scheme['top_row']['bg'].';}
 .folder_bg {background-color: '.$color_scheme['main_table']['folder_bg'].';}
 .file_bg1 {background-color: '.$color_scheme['main_table']['file_bg1'].';}
-.file_bg2 {background-color: '.$color_scheme['main_table']['file_bg2'].';}';?>
+.file_bg2 {background-color: '.$color_scheme['main_table']['file_bg2'].';}'
+
+;
+/*
 .table_border {border: 1px dashed #666666;}
 .path_font {font-family: "Courier New", Courier, monospace;}
 .banned_font {font-size: 9px;}
@@ -106,7 +110,8 @@ a.sort:active{text-decoration: none;color: '.$color_scheme['link_sort']['active'
 .language_selection {height: 22px;	width: 182px;background-color:<?PHP echo $color_scheme['main_table']['file_bg1']; ?>;	border: 1px dashed #666666;}
 .selected_lang {background-color:<?PHP echo $color_scheme['main_table']['file_bg2']; ?>;}
 #file_edit_box {position:absolute;width: 150px;display:none;}
--->
+*/
+?>
 </style>
 <?PHP if($view_mode == 0) { //enable the javascript required for thumbnail view?>
 <script type="text/javascript">
