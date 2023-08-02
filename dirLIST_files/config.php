@@ -92,8 +92,8 @@ $view_mode_user_selectable = 0; // 0:No 1:Yes
 $display_image_thumbs = 0;
 
 //Enable content viewers? [HTTP LISTING ONLY]
-$enable_gallery      = 1; //When image file(s) are detected in the listed directory, a link is displayed to open the gallery
-$enable_media_player = 1; //When mp3 file(s) are detected in the listed directory, a link is displayed to open the music player
+$enable_gallery      = 0; //When image file(s) are detected in the listed directory, a link is displayed to open the gallery
+$enable_media_player = 0; //When mp3 file(s) are detected in the listed directory, a link is displayed to open the music player
 
 //Language/Localisation settings. Set to a value of 0 for English, 1 for French, 2 for German and 3 for Spanish
 $default_language         = 0; //0:English, 1:French, 2:German, 3:Spanish

@@ -2,7 +2,7 @@
 //dirLIST v0.3.0 functions file
 
 function count_($array) {
-    return is_array($array) ? count($array) : 0;
+    return is_countable($array) ? count($array) : 0;
 }
 
 function array_sum_($array) {

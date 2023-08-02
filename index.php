@@ -518,17 +518,17 @@ if(!empty($folders['name']) || !empty($files['name'])) { ?>
                     <tr>
                         <td width="95" class="top_row"><?PHP echo $local_text['total_files']; ?></td>
                         <td>
-						<?PHP if(isset($_GET['name'])) echo count_($files['name']); ?>, 
+						<?PHP echo count_($files['name']); ?>, 
 						<?PHP echo $local_text['consuming']; ?>: 
-						<?PHP if(isset($_GET['size'])) echo letter_size(array_sum_($files['size'])); ?>
+						<?PHP echo letter_size(array_sum_($files['size'])); ?>
 						</td>
                     </tr>
                     <tr>
                         <td width="95" class="top_row"><?PHP echo $local_text['total_files_and_folders']; ?></td>
                         <td>
-						<?PHP if(isset($_GET['name'])) echo (count_($folders['name'])+count_($files['name'])); ?>, 
+						<?PHP echo (count_($folders['name'])+count_($files['name'])); ?>, 
 						<?PHP echo $local_text['consuming']; ?>: 
-						<?PHP if(isset($_GET['size'])) echo letter_size((array_sum_($files['size'])+array_sum_($folders['size']))); ?>
+						<?PHP echo letter_size((array_sum_($files['size'])+array_sum_($folders['size']))); ?>
 						</td>
                     </tr>
                 </table><br />

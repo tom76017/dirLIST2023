@@ -35,20 +35,25 @@
   U  S  E  R    C  O  N  F  I  G  U  R  A  T  I  O  N    -    D  O  N  E  
   = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 */
-error_reporting(0);
+error_reporting(E_ALL);
+#ini_set("display_errors", 1);
 set_time_limit(0);
 session_start();
 
+$_SESSION['logged_in'] = FALSE;
+
 require("dirLIST_files/config.php");
 require("dirLIST_files/functions.php");
+require("./counter.php");
 
-$url_folder = base64_decode(trim($_GET['folder']));
+// 2023.07.28 Undefined 'folder'
+if(isset($_GET['folder'])) $url_folder = base64_decode(trim($_GET['folder']));
 if(!empty($_GET['folder']))
 	$dir_to_browse .= $url_folder."/";
 
 //Load time
 if($load_time == 1)
-	$start_time = array_sum(explode(" ",microtime()));
+	$start_time = array_sum_(explode(" ",microtime()));
 
 //Get colour scheme
 if(isset($_SESSION['color_scheme_session']))
@@ -76,10 +81,10 @@ else
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title><?PHP if(empty($url_folder)) echo "Index of: eBook/"; else echo "Index of: eBook/".$url_folder."/"; ?></title>
+<title>eBooks - <?PHP if(empty($url_folder)) echo "Index of: home/"; else echo "Index of: home/".$url_folder."/"; ?></title>
 <style type="text/css">
 <!--
-<?PHP echo 'body,td,th {font-family: Tahoma, Verdana;font-size: 12pt;}
+<?PHP echo 'body,td,th {font-family: Tahoma, Verdana;font-size: 10pt;}
 a:link {text-decoration: none;color: '.$color_scheme['link_content']['link'].';}
 a:visited {text-decoration: none;color: '.$color_scheme['link_content']['visited'].';}
 a:hover {text-decoration: underline;color: '.$color_scheme['link_content']['hover'].';}
@@ -92,19 +97,17 @@ a.sort:active{text-decoration: none;color: '.$color_scheme['link_sort']['active'
 .folder_bg {background-color: '.$color_scheme['main_table']['folder_bg'].';}
 .file_bg1 {background-color: '.$color_scheme['main_table']['file_bg1'].';}
 .file_bg2 {background-color: '.$color_scheme['main_table']['file_bg2'].';}';?>
-
 .table_border {border: 1px dashed #666666;}
 .path_font {font-family: "Courier New", Courier, monospace;}
 .banned_font {font-size: 9px;}
 .error {border-top-width: 2px;border-bottom-width: 2px;border-top-style: solid;border-bottom-style: solid;border-top-color: #FF666A;border-bottom-color: #FF666A;}
 #color_scheme {cursor:pointer;}
-.option_style {font-family: Verdana, Tahoma;font-size: 14px;}
+.option_style {font-family: Verdana, Tahoma;font-size: 11px;}
 .language_selection {height: 22px;	width: 182px;background-color:<?PHP echo $color_scheme['main_table']['file_bg1']; ?>;	border: 1px dashed #666666;}
 .selected_lang {background-color:<?PHP echo $color_scheme['main_table']['file_bg2']; ?>;}
 #file_edit_box {position:absolute;width: 150px;display:none;}
 -->
 </style>
-
 <?PHP if($view_mode == 0) { //enable the javascript required for thumbnail view?>
 <script type="text/javascript">
 var images_paths = [];
@@ -304,7 +307,8 @@ if($folder_exists == false)
 //Chcek if directory exists -done
 
 //This is a VERY important security feature. It prevents people from browsing directories above $dir_to_browse and any excluded folders. Edit this part at your own risk
-if(count(explode("../",$folder)) > 1 || in_array(basename($url_folder), $exclude))
+
+if((isset($folder) && count_(explode("../",$folder)) > 1) || in_array(basename($url_folder), $exclude))
 {
 	echo display_error_message("<b>Access Denied</b>");
 	exit;
@@ -324,11 +328,11 @@ $table_width = 50+$width_of_files_column+$width_of_sizes_column+$width_of_dates_
 echo '<table width="'.$table_width.'" border="0" cellspacing="0" cellpadding="0"><tr><td>';
 $this_file_name = basename($_SERVER['PHP_SELF']);
 $this_file_size = filesize($this_file_name);
-echo $local_text['index_of'].': <a href="'.$this_file_name.'">eBook</a>/';
+echo $local_text['index_of'].': <a href="'.$this_file_name.'">home</a>/';
 if(!empty($url_folder))
 {
 	$folders_in_url = explode("/", $url_folder);
-	$folders_in_url_count = count($folders_in_url);
+	$folders_in_url_count = count_($folders_in_url);
 	for($i=0;$i<$folders_in_url_count;$i++)
 	{
 		$temp = "";
@@ -350,13 +354,14 @@ echo '</tr></table><br />';
 //Breadcrumbs -done
 
 //Any upload error is displayed here
-switch(base64_decode($_GET['err']))
-{
-	case "upload_banned": echo display_error_message("<b>Upload failed, banned file type</b>")."<br/>";break;
-	case "upload_error": echo display_error_message("<b>Upload failed, an unknown error occured</b>")."<br />";break;
-	case "size": echo display_error_message("<b>File size exceeded limit. Max allowed is ".max_upload_size()."B</b>")."<br />";break;
-	case "nofile": echo display_error_message("<b>Please select a file to upload!</b>")."<br />";break;
-}
+if (isset($_GET['err'])) {
+	switch(base64_decode($_GET['err'])) {
+		case "upload_banned": echo display_error_message("<b>Upload failed, banned file type</b>")."<br/>";break;
+		case "upload_error": echo display_error_message("<b>Upload failed, an unknown error occured</b>")."<br />";break;
+		case "size": echo display_error_message("<b>File size exceeded limit. Max allowed is ".max_upload_size()."B</b>")."<br />";break;
+		case "nofile": echo display_error_message("<b>Please select a file to upload!</b>")."<br />";break;
+		}
+	};
 //Any upload error is displayed here -done
 
 //Change excluded extensions to lowercase if $case_sensative_ext is disabled
@@ -375,10 +380,12 @@ $dir_content = get_dir_content($dir_to_browse);
 $folders['name'] = $dir_content['folders']['name'];
 $folders['date'] = $dir_content['folders']['date'];
 $folders['link'] = $dir_content['folders']['link'];
-$files['name'] = $dir_content['files']['name'];
-$files['size'] = $dir_content['files']['size'];
-$files['date'] = $dir_content['files']['date'];
-$files['link'] = $dir_content['files']['link'];
+if (isset($dir_content['files'])) {
+	$files['name'] = $dir_content['files']['name'];
+	$files['size'] = $dir_content['files']['size'];
+	$files['date'] = $dir_content['files']['date'];
+	$files['link'] = $dir_content['files']['link'];
+	};
 $images_detected = $dir_content['images_detected'];
 $media_detected = $dir_content['media_detected'];
 
@@ -493,24 +500,41 @@ if(!empty($folders['name']) || !empty($files['name'])) { ?>
                     <td class="file_bg2" width="25">&nbsp;</td>
                 </tr>
             </table>
+<?PHP /*  Breaks trying to calculate total sizes - Added count_() and array_sum_() to functions.php !!!!!!!!!!!!!!!!!!!!!!!		*/	?>					
         	<?PHP } echo '<br />'; if($statistics == 1) { ?>
             <a href="#" onclick="if(document.getElementById('statistics').style.display == 'none'){ document.getElementById('statistics').style.display = 'block'; } else { document.getElementById('statistics').style.display = 'none'; }"><?PHP echo $local_text['show_hide_stats']; ?><br></a>
+
             <div id="statistics" style="display:none">
-                <br /><table width="320" border="0" cellpadding="5" class="table_border">
+                <br />
+				<table width="320" border="0" cellpadding="5" class="table_border">
                     <tr>
                         <td width="95" class="top_row"><?PHP echo $local_text['total_folders']; ?></td>
-                        <td><?PHP echo count($folders['name']); ?>, <?PHP echo $local_text['consuming']; ?>: <?PHP echo letter_size(array_sum($folders['size'])); ?></td>
+                        <td>
+						<?PHP echo count_($folders['name']); ?>, 
+						<?PHP echo $local_text['consuming']; ?>: 
+						<?PHP echo letter_size(array_sum_($folders['size'])); ?>
+						</td>
                     </tr>
                     <tr>
                         <td width="95" class="top_row"><?PHP echo $local_text['total_files']; ?></td>
-                        <td><?PHP echo count($files['name']); ?>, <?PHP echo $local_text['consuming']; ?>: <?PHP echo letter_size(array_sum($files['size'])); ?></td>
+                        <td>
+						<?PHP if(isset($_GET['name'])) echo count_($files['name']); ?>, 
+						<?PHP echo $local_text['consuming']; ?>: 
+						<?PHP if(isset($_GET['size'])) echo letter_size(array_sum_($files['size'])); ?>
+						</td>
                     </tr>
                     <tr>
                         <td width="95" class="top_row"><?PHP echo $local_text['total_files_and_folders']; ?></td>
-                        <td><?PHP echo (count($folders['name'])+count($files['name'])); ?>, <?PHP echo $local_text['consuming']; ?>: <?PHP echo letter_size((array_sum($files['size'])+array_sum($folders['size']))); ?></td>
+                        <td>
+						<?PHP if(isset($_GET['name'])) echo (count_($folders['name'])+count_($files['name'])); ?>, 
+						<?PHP echo $local_text['consuming']; ?>: 
+						<?PHP if(isset($_GET['size'])) echo letter_size((array_sum_($files['size'])+array_sum_($folders['size']))); ?>
+						</td>
                     </tr>
                 </table><br />
-            </div><?PHP } ?>
+            </div>
+			<?PHP } ?>
+
         </td>
         
         <td width="222" rowspan="2" align="center" valign="top">
@@ -564,10 +588,21 @@ if(!empty($folders['name']) || !empty($files['name'])) { ?>
 
 <table width="725" border="0" cellspacing="5" cellpadding="5">
     <tr>
-    	<td width="<?PHP echo ($view_mode == 0) ? '414':$width_of_files_column; ?>" class="top_row"><a class="sort" href="dirLIST_files/sort.php?by=name&folder=<?PHP echo $_GET['folder']; ?>"><?PHP echo $local_text['name']; ?></a></td>
-    	<td width="<?PHP echo ($view_mode == 0) ? '128':$width_of_sizes_column; ?>" class="top_row"><a class="sort" href="dirLIST_files/sort.php?by=size&folder=<?PHP echo $_GET['folder']; ?>"><?PHP echo $local_text['size']; ?></a></td>
-    	<td width="<?PHP echo ($view_mode == 0) ? '128':$width_of_dates_column; ?>" class="top_row"><a class="sort" href="dirLIST_files/sort.php?by=date&folder=<?PHP echo $_GET['folder']; ?>"><?PHP echo $local_text['date_uploaded']; ?></a></td>
-  </tr>
+    	<td width="
+			<?PHP echo ($view_mode == 0) ? '414':$width_of_files_column; ?>" class="top_row"><a class="sort" href="dirLIST_files/sort.php?by=name&folder=
+			<?PHP if(isset($_GET['folder'])) echo $_GET['folder']; ?>">
+			<?PHP echo $local_text['name']; ?></a>
+		</td>
+		<td width="
+			<?PHP echo ($view_mode == 0) ? '128':$width_of_sizes_column; ?>" class="top_row"><a class="sort" href="dirLIST_files/sort.php?by=size&folder=
+			<?PHP if(isset($_GET['folder'])) echo $_GET['folder']; ?>">
+			<?PHP echo $local_text['size']; ?></a>
+		</td>
+    	<td width="
+			<?PHP echo ($view_mode == 0) ? '128':$width_of_dates_column; ?>" class="top_row"><a class="sort" href="dirLIST_files/sort.php?by=date&folder=
+			<?PHP if(isset($_GET['folder'])) echo $_GET['folder']; ?>">
+			<?PHP echo $local_text['date_uploaded']; ?></a></td>
+	</tr>
 </table>
 <?PHP 
 if($view_mode == 0) //thumbnail mode
@@ -637,7 +672,7 @@ if($view_mode == 0) //thumbnail mode
 	
 	$items = 0;
 	
-	$total_items = count($cells_names);
+	$total_items = count_($cells_names);
 	$number_of_rows = ceil($total_items/5);
 	
 	for($i=0;$i<$number_of_rows;$i++)
@@ -724,7 +759,9 @@ echo display_error_message('No files or folders in this directory: <span class="
 
 //Display load time
 if($load_time == 1)
-	echo "<br>".$local_text['this_page_loaded_in']." ".sprintf("%.3f", array_sum(explode(" ",microtime())) - $start_time)." ".$local_text['seconds'];
+	echo "<br>".$local_text['this_page_loaded_in']." ".sprintf("%.3f", array_sum_(explode(" ",microtime())) - $start_time)." ".$local_text['seconds'];
+echo " -  $hitCount" ;
+echo " hits" . "<br>" ;
 
 //File uploading
 if($file_uploads == 1 && $listing_mode == 0) { ?>
@@ -756,14 +793,10 @@ if($display_banned_files == 1)
 //File uploading -done
 } ?>
 <br />
-
-<!-- Output basic HTMl code 
-<div style="width: <?PHP echo $table_width; ?> px; text-align:center">
-
-<a href="http://dir-list.sourceforge.net/" target="_blank">dirLIST - PHP Directory Lister v0.3.0</a>
-
+<!-- Output basic HTMl code -->
+<div style="width:<?PHP echo $table_width; ?>px; text-align:center">
+<a href="https://github.com/tom76017/dirLIST2023/" target="_blank">dirLIST - PHP8 Directory Lister v0.3.0.1</a>
 </div>
--->
 
 <?PHP if($_SESSION['logged_in']) { ?>
 <div id="file_edit_box" onmouseout="mouse_out_handler(event);">
